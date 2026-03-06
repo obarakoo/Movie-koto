@@ -52,6 +52,7 @@ const GhibliCard = ({ film }) => {
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        onClick={() => setShowPlayer(true)}
       >
         <div
           style={{
@@ -61,7 +62,6 @@ const GhibliCard = ({ film }) => {
             boxShadow: hovered ? '0 10px 40px rgba(0,0,0,0.8), 0 0 0 2px #f59e0b' : '0 2px 10px rgba(0,0,0,0.4)',
             transition: 'box-shadow 0.25s',
           }}
-          onClick={() => setShowPlayer(true)}
         >
           <img
             src={film.image}
@@ -70,6 +70,23 @@ const GhibliCard = ({ film }) => {
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             onError={(e) => { e.target.src = 'https://via.placeholder.com/210x310?text=Ghibli'; }}
           />
+
+          {/* Play Overlay on Hover */}
+          {hovered && (
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'rgba(0,0,0,0.4)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <div style={{
+                width: '45px', height: '45px', borderRadius: '50%',
+                background: 'rgba(255,255,255,0.9)', display: 'flex',
+                alignItems: 'center', justifyContent: 'center'
+              }}>
+                <FaPlay style={{ color: '#000', fontSize: '16px', marginLeft: '3px' }} />
+              </div>
+            </div>
+          )}
           {/* Ghibli badge */}
           <div style={{
             position: 'absolute', top: '8px', left: '8px',
@@ -111,7 +128,7 @@ const GhibliCard = ({ film }) => {
           }}>
             <div style={{ display: 'flex', gap: '6px', marginBottom: '8px', justifyContent: 'flex-start' }}>
               <button
-                onClick={() => setShowPlayer(true)}
+                onClick={(e) => { e.stopPropagation(); setShowPlayer(true); }}
                 style={{
                   background: '#f59e0b', border: 'none', borderRadius: '50%',
                   width: '36px', height: '36px',
@@ -122,7 +139,7 @@ const GhibliCard = ({ film }) => {
                 <FaPlay style={{ color: '#000', fontSize: '12px', marginLeft: '2px' }} />
               </button>
               <button
-                onClick={() => inList ? removeFromList(fakeShow.id) : addToList(fakeShow)}
+                onClick={(e) => { e.stopPropagation(); inList ? removeFromList(fakeShow.id) : addToList(fakeShow); }}
                 style={{
                   background: inList ? '#e50914' : 'rgba(255,255,255,0.15)',
                   border: '2px solid', borderColor: inList ? '#e50914' : '#aaa',

@@ -87,20 +87,44 @@ const Home = () => {
     fetchAll();
   }, []);
 
-  const heroShow = [...trending]
-    .filter((s) => s.image?.original && s.rating?.average)
-    .sort((a, b) => (b.rating?.average || 0) - (a.rating?.average || 0))[0] || trending[0];
+  // Select a hero movie from the playable "Full Movie" collections
+  const heroShow = scifiMovies[0] || comedyMovies[0] || trending[0];
+
+  // Map Archive movie to Hero format if needed
+  const heroData = heroShow?.identifier ? {
+    id: `archive_${heroShow.identifier}`,
+    name: heroShow.title,
+    image: { original: getArchiveThumbnail(heroShow.identifier) },
+    summary: heroShow.description,
+    _archiveId: heroShow.identifier,
+    genres: ['Free Full Movie'],
+    rating: { average: 8.5 }
+  } : heroShow;
 
   return (
     <div style={{ backgroundColor: '#141414', width: '100%', minHeight: '100vh', overflowX: 'hidden' }}>
-      <Hero show={heroShow} />
+      <Hero show={heroData} />
 
       <div style={{ marginTop: '-60px', position: 'relative', zIndex: 2 }}>
+        
+        {/* FREE archive movies FIRST — because they are actually playable */}
+        <ContentRow
+          title="🎬 Free Sci-Fi & Horror (Full Movies)"
+          accent="#a855f7"
+          items={scifiMovies}
+          renderItem={(movie) => <ArchiveCard movie={movie} />}
+        />
+
+        <ContentRow
+          title="🤣 Free Comedy Classics (Full Movies)"
+          accent="#22c55e"
+          items={comedyMovies}
+          renderItem={(movie) => <ArchiveCard movie={movie} />}
+        />
 
         {/* TVMaze rows */}
         <MovieRow title="🔥 Trending TV Shows" movies={trending} accent="#e50914" />
         <MovieRow title="⭐ Popular on MovieKoto" movies={popular} accent="#fbbf24" />
-        <MovieRow title="🏆 Top Rated Shows"movies={topRated} accent="#22d3ee" />
 
         {/* Studio Ghibli */}
         <ContentRow
@@ -110,23 +134,8 @@ const Home = () => {
           renderItem={(film) => <GhibliCard film={film} />}
         />
 
-        {/* FREE archive movies */}
         <ContentRow
-          title="🎬 Free Sci-Fi & Horror (Public Domain)"
-          accent="#a855f7"
-          items={scifiMovies}
-          renderItem={(movie) => <ArchiveCard movie={movie} />}
-        />
-
-        <ContentRow
-          title="🤣 Free Comedy Films (Public Domain)"
-          accent="#22c55e"
-          items={comedyMovies}
-          renderItem={(movie) => <ArchiveCard movie={movie} />}
-        />
-
-        <ContentRow
-          title="🎞️ Silent Film Classics (Public Domain)"
+          title="🎞️ Silent Film Classics"
           accent="#94a3b8"
           items={silentMovies}
           renderItem={(movie) => <ArchiveCard movie={movie} />}

@@ -26,10 +26,11 @@ const PlayerModal = ({ title, description, archiveId, searchTitle, metadata = {}
   }, [onClose]);
 
   const isRealVideo = Boolean(archiveId);
+  const searchQuery = encodeURIComponent((searchTitle || title) + ' trailer');
 
   const embedSrc = isRealVideo
     ? getArchiveEmbedUrl(archiveId)
-    : `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent((searchTitle || title) + ' official trailer')}&autoplay=1`;
+    : `https://www.youtube.com/embed?listType=search&list=${searchQuery}`;
 
   const cleanDescription = description
     ? description.replace(/<[^>]+>/g, '').substring(0, 200) + (description.length > 200 ? '…' : '')
@@ -40,7 +41,7 @@ const PlayerModal = ({ title, description, archiveId, searchTitle, metadata = {}
       onClick={onClose}
       style={{
         position: 'fixed', inset: 0,
-        background: 'rgba(0,0,0,0.92)',
+        background: 'rgba(0,0,0,0.95)',
         zIndex: 99999,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: '20px',
@@ -52,38 +53,41 @@ const PlayerModal = ({ title, description, archiveId, searchTitle, metadata = {}
           position: 'relative',
           width: '100%', maxWidth: '960px',
           background: '#181818',
-          borderRadius: '8px',
+          borderRadius: '12px',
           overflow: 'hidden',
-          boxShadow: '0 30px 80px rgba(0,0,0,0.95)',
+          boxShadow: '0 30px 100px rgba(0,0,0,1)',
         }}
       >
         {/* Close button */}
         <button
           onClick={onClose}
           style={{
-            position: 'absolute', top: '12px', right: '12px', zIndex: 10,
-            background: 'rgba(0,0,0,0.75)', border: '2px solid #555',
-            color: '#fff', borderRadius: '50%', width: '38px', height: '38px',
-            fontSize: '16px', cursor: 'pointer', fontWeight: 700,
+            position: 'absolute', top: '16px', right: '16px', zIndex: 10,
+            background: 'rgba(0,0,0,0.7)', border: 'none',
+            color: '#fff', borderRadius: '50%', width: '40px', height: '40px',
+            fontSize: '20px', cursor: 'pointer', fontWeight: 300,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'background 0.2s',
           }}
+          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+          onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.7)'}
         >
           ✕
         </button>
 
         {/* Source badge */}
         <div style={{
-          position: 'absolute', top: '12px', left: '12px', zIndex: 10,
-          background: isRealVideo ? '#e50914' : '#ff0000',
-          color: '#fff', fontSize: '11px', fontWeight: 800,
-          padding: '3px 10px', borderRadius: '3px',
-          letterSpacing: '0.5px',
+          position: 'absolute', top: '16px', left: '16px', zIndex: 10,
+          background: isRealVideo ? '#22c55e' : '#e50914',
+          color: '#fff', fontSize: '12px', fontWeight: 900,
+          padding: '4px 12px', borderRadius: '4px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
         }}>
-          {isRealVideo ? '▶ FREE MOVIE' : '▶ YOUTUBE TRAILER'}
+          {isRealVideo ? '▶ WATCH FULL MOVIE' : '▶ TRAILER'}
         </div>
 
         {/* Video iframe */}
-        <div style={{ position: 'relative', paddingTop: '56.25%' }}>
+        <div style={{ position: 'relative', paddingTop: '56.25%', background: '#000' }}>
           <iframe
             src={embedSrc}
             title={title}
@@ -97,48 +101,69 @@ const PlayerModal = ({ title, description, archiveId, searchTitle, metadata = {}
         </div>
 
         {/* Info panel */}
-        <div style={{ padding: '20px 24px 24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
-            <div>
-              <h2 style={{ color: '#fff', fontSize: '20px', fontWeight: 800, marginBottom: '6px' }}>
+        <div style={{ padding: '24px 32px 32px', background: 'linear-gradient(to bottom, #181818 0%, #111 100%)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+            <div style={{ flex: 1, minWidth: '300px' }}>
+              <h2 style={{ color: '#fff', fontSize: '24px', fontWeight: 800, marginBottom: '8px' }}>
                 {title}
               </h2>
               <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
                 {metadata.rating && (
-                  <span style={{ color: '#46d369', fontWeight: 700, fontSize: '13px' }}>
+                  <span style={{ color: '#46d369', fontWeight: 700 }}>
                     ⭐ {metadata.rating}
                   </span>
                 )}
                 {metadata.year && (
-                  <span style={{ color: '#b3b3b3', fontSize: '13px' }}>{metadata.year}</span>
+                  <span style={{ color: '#b3b3b3' }}>{metadata.year}</span>
                 )}
                 {metadata.genres?.map((g) => (
-                  <span key={g} style={{ border: '1px solid #555', padding: '1px 8px', color: '#ccc', fontSize: '11px', borderRadius: '3px' }}>
+                  <span key={g} style={{ border: '1px solid #444', padding: '2px 10px', color: '#aaa', fontSize: '11px', borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     {g}
                   </span>
                 ))}
               </div>
+              {cleanDescription && (
+                <p style={{ color: '#b3b3b3', fontSize: '14px', lineHeight: 1.6, marginTop: '16px' }}>
+                  {cleanDescription}
+                </p>
+              )}
             </div>
-            {isRealVideo && (
-              <a
-                href={`https://archive.org/details/${archiveId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: '#b3b3b3', fontSize: '12px', textDecoration: 'none',
-                  border: '1px solid #555', padding: '4px 10px', borderRadius: '3px',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                Open on Archive.org ↗
-              </a>
-            )}
+
+            {/* ACTION BUTTONS (FALLBACKS) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {isRealVideo ? (
+                <a
+                  href={`https://archive.org/details/${archiveId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: '#22c55e', color: '#000', fontSize: '14px', fontWeight: 700,
+                    textDecoration: 'none', padding: '12px 24px', borderRadius: '4px',
+                    textAlign: 'center', transition: 'transform 0.2s',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                >
+                  Watch on Archive.org
+                </a>
+              ) : (
+                <a
+                  href={`https://www.youtube.com/results?search_query=${searchQuery}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: '#e50914', color: '#fff', fontSize: '14px', fontWeight: 700,
+                    textDecoration: 'none', padding: '12px 24px', borderRadius: '4px',
+                    textAlign: 'center', transition: 'background 0.2s',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = '#ff0a16'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = '#e50914'}
+                >
+                  Watch on YouTube ↗
+                </a>
+              )}
+            </div>
           </div>
-          {cleanDescription && (
-            <p style={{ color: '#939393', fontSize: '13px', lineHeight: 1.6, marginTop: '10px' }}>
-              {cleanDescription}
-            </p>
-          )}
         </div>
       </div>
     </div>

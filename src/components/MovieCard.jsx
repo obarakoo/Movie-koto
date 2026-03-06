@@ -51,7 +51,7 @@ const MovieCard = ({ movie }) => {
         style={{
           position: 'relative',
           borderRadius: '4px',
-          overflow: 'visible',
+          overflow: hovered ? 'visible' : 'hidden', // Changed to hidden when not hovered for clean rounded corners
           cursor: 'pointer',
           transition: 'transform 0.25s ease, z-index 0s',
           transform: hovered ? 'scale(1.12)' : 'scale(1)',
@@ -59,30 +59,48 @@ const MovieCard = ({ movie }) => {
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        onClick={handlePlay} // MAKE WHOLE CARD PLAYABLE
       >
         {/* Card image */}
-        <Link to={`/movie/${show.id}`} style={{ textDecoration: 'none', display: 'block' }}>
-          <div
-            style={{
-              width: '100%',
-              aspectRatio: '2 / 3',
-              borderRadius: '4px',
-              overflow: 'hidden',
-              backgroundColor: '#181818',
-              boxShadow: hovered
-                ? '0 10px 40px rgba(0,0,0,0.8), 0 0 0 2px #e50914'
-                : '0 2px 10px rgba(0,0,0,0.4)',
-              transition: 'box-shadow 0.25s ease',
-            }}
-          >
-            <img
-              src={poster}
-              alt={show.name}
-              loading="lazy"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
-          </div>
-        </Link>
+        <div
+          style={{
+            width: '100%',
+            aspectRatio: '2 / 3',
+            borderRadius: '4px',
+            overflow: 'hidden',
+            backgroundColor: '#181818',
+            boxShadow: hovered
+              ? '0 10px 40px rgba(0,0,0,0.8), 0 0 0 2px #e50914'
+              : '0 2px 10px rgba(0,0,0,0.4)',
+            transition: 'box-shadow 0.25s ease',
+            position: 'relative'
+          }}
+        >
+          <img
+            src={poster}
+            alt={show.name}
+            loading="lazy"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+          
+          {/* Play Overlay on Hover */}
+          {hovered && (
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'rgba(0,0,0,0.4)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'opacity 0.2s'
+            }}>
+              <div style={{
+                width: '50px', height: '50px', borderRadius: '50%',
+                background: 'rgba(255,255,255,0.9)', display: 'flex',
+                alignItems: 'center', justifyContent: 'center'
+              }}>
+                <FaPlay style={{ color: '#000', fontSize: '18px', marginLeft: '3px' }} />
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Hover info panel — appears below card */}
         {hovered && (
@@ -148,7 +166,11 @@ const MovieCard = ({ movie }) => {
               </button>
 
               {/* More info */}
-              <Link to={`/movie/${show.id}`} style={{ textDecoration: 'none', flexShrink: 0 }}>
+              <Link
+                to={`/movie/${show.id}`}
+                onClick={(e) => e.stopPropagation()} // DON'T PLAY WHEN CLICKING INFO
+                style={{ textDecoration: 'none', flexShrink: 0 }}
+              >
                 <button
                   title="More Info"
                   style={{

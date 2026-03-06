@@ -10,6 +10,7 @@ const TrailerModal = ({ show, onClose }) => {
     <PlayerModal
       title={show.name}
       description={show.summary}
+      archiveId={show._archiveId}
       searchTitle={`${show.name} official trailer`}
       metadata={{
         year: show.premiered?.substring(0, 4),

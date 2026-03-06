@@ -12,7 +12,7 @@ const Navbar = () => {
 
   const navLinks = [
     { label: 'Home', path: '/' },
-    { label: 'Movies', path: '/movies' },
+    { label: 'Full Movies', path: '/movies', highlight: true },
     { label: 'TV Shows', path: '/tv-shows' },
     { label: 'Trending', path: '/trending' },
   ];
@@ -63,13 +63,14 @@ const Navbar = () => {
               key={link.label}
               to={link.path}
               style={{
-                color: isActive(link.path) ? '#fff' : '#e5e5e5',
-                fontWeight: isActive(link.path) ? 700 : 400,
+                color: link.highlight ? '#22c55e' : (isActive(link.path) ? '#fff' : '#e5e5e5'),
+                fontWeight: (isActive(link.path) || link.highlight) ? 700 : 400,
                 fontSize: '14px', textDecoration: 'none',
                 transition: 'color 0.15s', whiteSpace: 'nowrap',
+                textShadow: link.highlight ? '0 0 10px rgba(34,197,94,0.4)' : 'none',
               }}
-              onMouseEnter={(e) => (e.target.style.color = '#b3b3b3')}
-              onMouseLeave={(e) => (e.target.style.color = isActive(link.path) ? '#fff' : '#e5e5e5')}
+              onMouseEnter={(e) => (e.target.style.color = link.highlight ? '#4ade80' : '#b3b3b3')}
+              onMouseLeave={(e) => (e.target.style.color = link.highlight ? '#22c55e' : (isActive(link.path) ? '#fff' : '#e5e5e5'))}
             >
               {link.label}
             </Link>

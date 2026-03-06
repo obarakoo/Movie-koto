@@ -120,7 +120,7 @@ const Hero = ({ show }) => {
               onMouseLeave={(e) => (e.currentTarget.style.background = '#fff')}
             >
               <FaPlay style={{ fontSize: '14px' }} />
-              Play
+              {show._archiveId ? 'Watch Full Movie' : 'Play Trailer'}
             </button>
 
             {/* + My List */}

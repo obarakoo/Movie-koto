@@ -53,6 +53,7 @@ const ArchiveCard = ({ movie }) => {
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        onClick={() => setShowPlayer(true)}
       >
         {/* Poster */}
         <div
@@ -63,7 +64,6 @@ const ArchiveCard = ({ movie }) => {
             boxShadow: hovered ? '0 10px 40px rgba(0,0,0,0.8), 0 0 0 2px #e50914' : '0 2px 10px rgba(0,0,0,0.4)',
             transition: 'box-shadow 0.25s',
           }}
-          onClick={() => setShowPlayer(true)}
         >
           <img
             src={poster}
@@ -72,6 +72,23 @@ const ArchiveCard = ({ movie }) => {
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             onError={(e) => { e.target.style.display = 'none'; }}
           />
+
+          {/* Play Overlay on Hover */}
+          {hovered && (
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'rgba(0,0,0,0.4)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <div style={{
+                width: '45px', height: '45px', borderRadius: '50%',
+                background: 'rgba(255,255,255,0.9)', display: 'flex',
+                alignItems: 'center', justifyContent: 'center'
+              }}>
+                <FaPlay style={{ color: '#000', fontSize: '16px', marginLeft: '3px' }} />
+              </div>
+            </div>
+          )}
           {/* FREE badge */}
           <div style={{
             position: 'absolute', top: '8px', left: '8px',
@@ -105,7 +122,7 @@ const ArchiveCard = ({ movie }) => {
             <div style={{ display: 'flex', gap: '6px', marginBottom: '8px', justifyContent: 'space-between' }}>
               {/* Play */}
               <button
-                onClick={() => setShowPlayer(true)}
+                onClick={(e) => { e.stopPropagation(); setShowPlayer(true); }}
                 style={{
                   background: '#22c55e', border: 'none', borderRadius: '50%',
                   width: '36px', height: '36px',
@@ -118,7 +135,7 @@ const ArchiveCard = ({ movie }) => {
               </button>
               {/* My List */}
               <button
-                onClick={() => inList ? removeFromList(fakeShow.id) : addToList(fakeShow)}
+                onClick={(e) => { e.stopPropagation(); inList ? removeFromList(fakeShow.id) : addToList(fakeShow); }}
                 style={{
                   background: inList ? '#e50914' : 'rgba(255,255,255,0.15)',
                   border: '2px solid', borderColor: inList ? '#e50914' : '#aaa',
@@ -134,6 +151,7 @@ const ArchiveCard = ({ movie }) => {
               <a
                 href={`https://archive.org/details/${movie.identifier}`}
                 target="_blank" rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
                 style={{
                   background: 'rgba(255,255,255,0.1)', border: '2px solid #aaa',
                   borderRadius: '50%', width: '36px', height: '36px',
