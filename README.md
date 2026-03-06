@@ -1,16 +1,35 @@
-# React + Vite
+# 🎬 MovieKoto – Netflix Redesign (School Project)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A cinematic movie discovery web application built for a school project. This project is designed to be **100% free and open-source**, using only public, keyless APIs.
 
-Currently, two official plugins are available:
+## 🚀 Concept
+MovieKoto is a high-performance Netflix-style UI that aggregates content from free and public domain sources. It focuses on accessibility and educational exploration of third-party API integration.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📡 100% Free & Open APIs
+This project does **not** use any payable or restricted APIs. It relies strictly on the following free services:
+1.  **TVMaze API**: Providing metadata for thousands of TV shows and movies without any API keys or subscriptions.
+2.  **Studio Ghibli API**: A dedicated resource for Studio Ghibli's legendary animation catalog.
+3.  **Internet Archive API**: Giving access to over **27,000+ free, public domain films** that are fully playable within the app.
 
-## React Compiler
+## ✨ Features
+- **Netflix Aesthetic**: Dark mode, glassmorphism, and cinematic transitions.
+- **Real Playback**: Watch actual public domain movies via Internet Archive.
+- **My List**: Save your favorite shows using local persistence (no database needed).
+- **Search & Filter**: Discover content by title or explore by genre.
+- **Mobile Responsive**: Fully optimized for phones, tablets, and desktops.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
+- React (Vite)
+- Tailwind CSS
+- Axios (API handling)
+- React Router (Routing)
 
-## Expanding the ESLint configuration
+## 📖 Educational Purpose
+This project was developed for a school assignment to demonstrate:
+- Redesigning a complex UI from scratch.
+- Handling multiple asynchronous data streams.
+- Implementing client-side state management (Context API).
+- Integrating public domain media safely.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+© 2026. Built for educational purposes. All media content is provided by the respective public APIs.
