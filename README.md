@@ -1,4 +1,4 @@
-# 🎬 MovieKoto – Netflix Redesign (School Project)
+# 🎬 MovieKoto – Netflix Redesign 
 
 A cinematic movie discovery web application built for a school project. This project is designed to be **100% free and open-source**, using only public, keyless APIs.
 
